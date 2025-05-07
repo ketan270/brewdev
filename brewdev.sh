@@ -24,14 +24,46 @@ case "$COMMAND" in
 esac
 
 RED="\033[0;31m"
+GREEN="\033[0;32m"
 RESET="\033[0m"
 
 if [[ "$COMMAND" == "setup" ]]; then
   if [[ "$SUBCOMMAND" == "fullstack" ]]; then
-    bash scripts/gui.sh
+    if [[ "$3" == "--gui" ]]; then
+      bash scripts/gui.sh
+    else
+      bash scripts/setup_fullstack.sh
+    fi
+  elif [[ "$SUBCOMMAND" == "backend" ]]; then
+    if [[ "$3" == "--gui" ]]; then
+      bash scripts/backend_gui.sh
+    else
+      bash scripts/setup_backend.sh
+    fi
   else
     echo -e "${RED}Unknown setup type: $SUBCOMMAND${RESET}"
+    echo "Available setup types: fullstack, backend"
+    echo "Use --gui flag for graphical interface (e.g., brewdev setup backend --gui)"
+  fi
+elif [[ "$COMMAND" == "uninstall" ]]; then
+  if [[ "$SUBCOMMAND" == "fullstack" ]]; then
+    if [[ "$3" == "--gui" ]]; then
+      bash scripts/gui.sh
+    else
+      bash scripts/uninstall_fullstack.sh
+    fi
+  elif [[ "$SUBCOMMAND" == "backend" ]]; then
+    if [[ "$3" == "--gui" ]]; then
+      bash scripts/backend_gui.sh
+    else
+      bash scripts/uninstall_backend.sh
+    fi
+  else
+    echo -e "${RED}Unknown uninstall type: $SUBCOMMAND${RESET}"
+    echo "Available uninstall types: fullstack, backend"
+    echo "Use --gui flag for graphical interface (e.g., brewdev uninstall backend --gui)"
   fi
 else
   echo -e "${RED}Unknown command: $COMMAND${RESET}"
+  echo -e "${GREEN}Use 'brewdev --help' for usage information${RESET}"
 fi
